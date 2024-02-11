@@ -1,0 +1,65 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/orderdb
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: ORDER-SERVICE
+  config:
+    import: configserver:http://localhost:9296
+  #OKTA configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-01763968.okta.com/oauth2/default
+      client:
+        registration:
+          internal-client:
+            provider: okta
+            authorizationGrantType: client_credentials
+            scope: internal
+            clientId: 0oaetkf9t6Uy9p4tj5d7
+            clientSecret: ON3n-Yev3nEUAfWP54f5ANAmCkm_QAIsx4oAGvsUa6vafBHZ0b-Zhcgkep20vs-W
+        provider:
+          okta:
+            issuerUri: https://dev-01763968.okta.com/oauth2/default
+
+#adding config for circuit breaker that name is external
+resilience4j:
+  circuitbreaker:
+    instances:
+      EXTERNAL_CIRCUIT_BREAKER:
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
+#okta:
+#  oauth2:
+#    issuer: https://dev-01763968.okta.com/oauth2/default
+#    audience: api://default

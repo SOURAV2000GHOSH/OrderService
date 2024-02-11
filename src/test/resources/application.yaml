@@ -1,0 +1,29 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:9296
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/orderdb
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-01763968.okta.com/oauth2/default
+      client:
+        registration:
+          internal-client:
+            provider: okta
+            authorizationGrantType: client_credentials
+            scope: internal
+            clientId: 0oaetkf9t6Uy9p4tj5d7
+            clientSecret: ON3n-Yev3nEUAfWP54f5ANAmCkm_QAIsx4oAGvsUa6vafBHZ0b-Zhcgkep20vs-W
+        provider:
+          okta:
+            issuerUri: https://dev-01763968.okta.com/oauth2/default
+eureka:
+  client:
+    enabled: false
