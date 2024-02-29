@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shopApplication</groupId>
-	<artifactId>OrderService</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>orderservice</artifactId>
+	<version>0.0.1</version>
 	<name>OrderService</name>
 	<description>Spring Boot project for ordering product</description>
 	<properties>
@@ -140,6 +140,22 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+					<from>
+						<image>openjdk:17</image>
+					</from>
+					<to>
+						<image>registry.hub.docker.com/souravghoshdev/${artifactId}</image>
+						<tags>
+                			<tag>latest</tag>
+                			<tag>${project.version}</tag>
+            			</tags>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
